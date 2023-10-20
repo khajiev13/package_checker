@@ -111,13 +111,18 @@ def check_forty_seven(tracking_num):
     # Define a list to store the data
     data = []
     for tracking_number in tracking_numbers:
-        output = forty_seven_find(tracking_number)
-        output = forty_seven_calculate_diff_days(output)
-        # Split the output into two columns
-        tracking_num,status, days = output.rsplit(' ')
-        # Append the data as a tuple
-        data.append((f"{tracking_number} {status}", days))
-        driver.quit()
+        try:
+            output = forty_seven_find(tracking_number)
+            output = forty_seven_calculate_diff_days(output)
+            # Split the output into two columns
+            tracking_num,status, days = output.rsplit(' ')
+            # Append the data as a tuple
+            data.append((f"{tracking_number} {status}", days))
+            driver.quit()
+        except:
+            data.append((f"{tracking_number} {status}", "Not found"))
+            driver.quit()
+        
     # Create a DataFrame
     df = pd.DataFrame(data, columns=['Tracking number', 'Delivered in days'])
     # Save the DataFrame to an Excel file
