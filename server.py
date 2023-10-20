@@ -27,7 +27,6 @@ def forty_seven_calculate_diff_days(inp):
         # Print the new string
         return new_string
     except:
-        print(inp[0], inp[1])
         return "Not found"
     
 def forty_seven_get_date_by_index(index_num):
