@@ -15,20 +15,16 @@ import os
 
 driver = None
 def forty_seven_calculate_diff_days(inp):
-    try:
-        # Convert the date strings to datetime objects
-        date_format = '%Y/%m/%d %H:%M:%S'
-        start_date = datetime.strptime(inp[0], date_format)
-        end_date = datetime.strptime(inp[1], date_format)
-        # Calculate the difference in days
-        days_difference = (end_date - start_date).days
-        # Create the new string
-        new_string = f"{inp[2]} {days_difference}"
-        # Print the new string
-        return new_string
-    except:
-        return "Not found"
-    
+    # Convert the date strings to datetime objects
+    date_format = '%Y/%m/%d %H:%M:%S'
+    start_date = datetime.strptime(inp[0], date_format)
+    end_date = datetime.strptime(inp[1], date_format)
+    # Calculate the difference in days
+    days_difference = (end_date - start_date).days
+    # Create the new string
+    new_string = f"{inp[2]} {days_difference}"
+    # Print the new string
+    return new_string
 def forty_seven_get_date_by_index(index_num):
     try:
         # Wait for the specific <tr> element with data-index="0" and extract the date
@@ -111,18 +107,13 @@ def check_forty_seven(tracking_num):
     # Define a list to store the data
     data = []
     for tracking_number in tracking_numbers:
-        while True:
-            try:
-                output = forty_seven_find(tracking_number)
-                output = forty_seven_calculate_diff_days(output)
-                # Split the output into two columns
-                tracking_num,status, days = output.rsplit(' ')
-                # Append the data as a tuple
-                data.append((f"{tracking_number} {status}", days))
-                break
-            except:
-                pass
-        
+        output = forty_seven_find(tracking_number)
+        print(output)
+        output = forty_seven_calculate_diff_days(output)
+        # Split the output into two columns
+        tracking_num,status, days = output.rsplit(' ')
+        # Append the data as a tuple
+        data.append((f"{tracking_number} {status}", days))
     # Create a DataFrame
     df = pd.DataFrame(data, columns=['Tracking number', 'Delivered in days'])
     # Save the DataFrame to an Excel file
