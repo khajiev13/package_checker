@@ -117,6 +117,7 @@ def check_forty_seven(tracking_num):
         tracking_num,status, days = output.rsplit(' ')
         # Append the data as a tuple
         data.append((f"{tracking_number} {status}", days))
+        driver.quit()
     # Create a DataFrame
     df = pd.DataFrame(data, columns=['Tracking number', 'Delivered in days'])
     # Save the DataFrame to an Excel file
