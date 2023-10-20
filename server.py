@@ -15,16 +15,21 @@ import os
 
 driver = None
 def forty_seven_calculate_diff_days(inp):
-    # Convert the date strings to datetime objects
-    date_format = '%Y/%m/%d %H:%M:%S'
-    start_date = datetime.strptime(inp[0], date_format)
-    end_date = datetime.strptime(inp[1], date_format)
-    # Calculate the difference in days
-    days_difference = (end_date - start_date).days
-    # Create the new string
-    new_string = f"{inp[2]} {days_difference}"
-    # Print the new string
-    return new_string
+    try:
+        # Convert the date strings to datetime objects
+        date_format = '%Y/%m/%d %H:%M:%S'
+        start_date = datetime.strptime(inp[0], date_format)
+        end_date = datetime.strptime(inp[1], date_format)
+        # Calculate the difference in days
+        days_difference = (end_date - start_date).days
+        # Create the new string
+        new_string = f"{inp[2]} {days_difference}"
+        # Print the new string
+        return new_string
+    except:
+        print(inp[0], inp[1])
+        return "Not found"
+    
 def forty_seven_get_date_by_index(index_num):
     try:
         # Wait for the specific <tr> element with data-index="0" and extract the date
@@ -95,7 +100,7 @@ def check_forty_seven(tracking_num):
     global driver
     driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options=op)
     # Navigate to the webpage
-    driver.get('http://47.101.70.255:81/#site9')  # Replace with the actual URL
+    driver.get('http://47.101.70.255:81/')  # Replace with the actual URL
     # tracking_numbers = [
     # "34Q7P509315401000930807",
     # "34Q7P509315301000930800",
