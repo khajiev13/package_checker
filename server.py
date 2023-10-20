@@ -45,14 +45,15 @@ def forty_seven_get_date_by_index(index_num):
         print("An error occurred:", str(e))
 def forty_seven_find(tracking_number):
     try:
+        driver.refresh()
         # Wait for the textarea element to be present
-        textarea = WebDriverWait(driver, 1).until(
+        textarea = WebDriverWait(driver, 2).until(
             EC.presence_of_element_located((By.NAME, 'desc'))
         )
         textarea.clear()
         textarea.send_keys(tracking_number)
         # Wait for the button element to be clickable
-        button = WebDriverWait(driver, 1).until(
+        button = WebDriverWait(driver, 2).until(
             EC.element_to_be_clickable((By.ID, 'QueryData'))
         )
         button.click()
@@ -77,7 +78,6 @@ def forty_seven_find(tracking_number):
             # Find the maximum 'data-index' value
             max_data_index = max(data_indices)
             last_element = forty_seven_get_date_by_index(max_data_index)
-            driver.refresh()
             return last_element,arrived_date, ID_status
 
         except Exception as e:
@@ -108,6 +108,7 @@ def check_forty_seven(tracking_num):
     # "34Q7P509315001000930809"
     # ]
     tracking_numbers = tracking_num.split()
+    print(tracking_numbers)
     # Define a list to store the data
     data = []
     for tracking_number in tracking_numbers:
