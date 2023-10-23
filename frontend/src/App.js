@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+import Lottie from "lottie-react";
+import Loading from "./loading.json";
+import Learning from "./learning.json";
+import Completed from "./completed.json";
+
 
 function App() {
   const [inputValue, setInputValue] = useState('');
@@ -57,33 +62,38 @@ function App() {
   return (
     <div className="fixed top-0 left-0 h-screen w-screen bg-zinc-50 flex justify-center items-center text-black">
       {processing ? (
-        <div class="flex">
-          <div class="relative">
-            <div class="w-12 h-12 rounded-full absolute border-8 border-solid border-gray-200"></div>
-            <div class="w-12 h-12 rounded-full animate-spin absolute border-8 border-solid border-purple-500 border-t-transparent"></div>
-          </div>
-        </div>
+        <>
+        <Lottie animationData={Loading} />
+        <h3>Working hard, please wait...</h3>
+        </>
       ) : (
         <>
           {downloadLink ? (
+            <>
+            <Lottie animationData={Completed} />
             <div>
-              <p>File is ready for download:</p>
+              <h3>Finally, I'm done!!!</h3>
               {downloadLink}
             </div>
+            </>
           ) : (
-            <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg shadow-lg">
+            <>
+            <Lottie animationData={Learning} />
+            <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg shadow-lg h-96 w-96 flex flex-col">
               <input
                 type="text"
                 name="input"
                 id="input"
                 value={inputValue}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="border border-gray-300 rounded  px-0 py-0 h-full"
               />
               <button type="submit" className="mt-2 bg-blue-500 hover-bg-blue-600 text-white font-semibold p-2 rounded">
                 Check
               </button>
+              
             </form>
+            </>
           )}
         </>
       )}
