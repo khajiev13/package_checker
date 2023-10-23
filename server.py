@@ -9,23 +9,16 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from flask_cors import CORS, cross_origin
 from flask import Flask, request, jsonify, send_file, send_from_directory
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 op = webdriver.ChromeOptions()  # Uncomment on production
-# op.add_argument("--headless") #Uncomment on production
+op.add_argument("--headless")  # Uncomment on production
 op.add_argument("--no-sandbox")
-# op.add_argument("--disable-dev-sh-usage") #Uncomment on production
+op.add_argument("--disable-dev-sh-usage")  # Uncomment on production
 op.add_argument("--disable-gpu")
 # Add options to ignore certificate errors and insecure certificate warnings
 op.add_argument("--ignore-certificate-errors")
 op.add_argument("--allow-running-insecure-content")
-
-
-# Create desired capabilities
-desired_capabilities = DesiredCapabilities.CHROME.copy()
-desired_capabilities['acceptSslCerts'] = True
-desired_capabilities['acceptInsecureCerts'] = True
 
 
 driver = webdriver.Chrome(service=Service(
@@ -161,21 +154,12 @@ def check_gf(tracking_number):
                 # Handle the case when the button is not found
                 print(
                     "The 'Send anyway' button is not present on the page. Continuing...")
-
-        current_url = driver.current_url
-        print("Current URL:", current_url)
-        current_title = driver.title
-        print("Current Title:", current_title)
-
         # Wait for the table to load
         table = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, 'oTHtable'))
         )
         # Get the rows of the table
         rows = table.find_elements(By.TAG_NAME, 'tr')
-        # loop through rows and print value of i and rows inner text
-        for i, row in enumerate(rows):
-            print(i, rows[i].find_elements(By.TAG_NAME, 'td')[0].text)
         # Get the second and last rows
         date_shipped = rows[len(
             rows)-1].find_elements(By.TAG_NAME, 'td')[0].text
