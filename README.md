@@ -4,6 +4,7 @@ This is a Flask web application that checks the delivery status of packages from
 ### Installation
 Activate the virtual environment by running the following command:
 ```
+python3 -m venv venv
 source venv/bin/activate
 ```
 
