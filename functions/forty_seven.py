@@ -4,7 +4,7 @@ import datetime
 from selenium.webdriver.support import expected_conditions as EC
 
 
-def check_forty_seven(tracking_number, driver):
+def check_forty_seven(tracking_number, driver, last_website_checked):
     def forty_seven_calculate_diff_days(inp):
         # Convert the date strings to datetime objects
         date_format = '%Y/%m/%d %H:%M:%S'
@@ -40,9 +40,9 @@ def check_forty_seven(tracking_number, driver):
 
     def forty_seven_find(tracking_number):
         try:
-            # Navigate to the webpage
-            # Replace with the actual URL
-            driver.get('http://47.101.70.255:81/')
+            if last_website_checked != '34':
+                # Navigate to the webpage
+                driver.get('http://47.101.70.255:81/')
 
             # Wait for the textarea element to be present
             textarea = WebDriverWait(driver, 3).until(

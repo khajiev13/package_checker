@@ -43,22 +43,24 @@ def check_data():
 
         # Define a list to store the data
         data = []
+        last_website_checked = None
         for input_data in input_datas:
             while True:
                 try:
                     if input_data.startswith('34'):
                         tracking_number, status, days = check_forty_seven(
-                            input_data, driver)
+                            input_data, driver, last_website_checked)
                         data.append((f"{tracking_number} {status}", days))
                     elif input_data.startswith('GF'):
                         tracking_number, status, days = check_gf(
-                            input_data, driver)
+                            input_data, driver, last_website_checked)
                         data.append((f"{tracking_number} {status}", days))
                     break
                 except Exception as e:
                     print("Something went wrong: Tracking number: ", input_data)
                     driver.quit()
                     print(e)
+            last_website_checked = input_data[:2]
 
         # Create a DataFrame
         df = pd.DataFrame(

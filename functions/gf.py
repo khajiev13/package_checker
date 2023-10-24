@@ -4,10 +4,11 @@ import datetime
 from selenium.webdriver.support import expected_conditions as EC
 
 
-def check_gf(tracking_number, driver):
+def check_gf(tracking_number, driver, last_website_checked):
     try:
-        # Navigate to the webpage
-        driver.get('https://www.hzydky.com/mob/track.htm')
+        if last_website_checked != 'GF':
+            # Navigate to the webpage
+            driver.get('https://www.hzydky.com/mob/track.htm')
 
         # Find the tracking number input field and submit button
         tracking_input = WebDriverWait(driver, 10).until(
