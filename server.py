@@ -45,22 +45,21 @@ def check_data():
         data = []
         last_website_checked = None
         for input_data in input_datas:
-            while True:
-                try:
-                    sleep(5)
-                    if input_data.startswith('34'):
-                        tracking_number, status, days = check_forty_seven(
-                            input_data, driver, last_website_checked)
-                        data.append((f"{tracking_number} {status}", days))
-                    elif input_data.startswith('GF'):
-                        tracking_number, status, days = check_gf(
-                            input_data, driver, last_website_checked)
-                        data.append((f"{tracking_number} {status}", days))
-                    break
-                except Exception as e:
-                    print("Something went wrong: Tracking number: ", input_data)
-                    print(driver.session_id)
-                    print(e)
+            sleep(5)
+            try:
+                if input_data.startswith('34'):
+                    tracking_number, status, days = check_forty_seven(
+                        input_data, driver, last_website_checked)
+                    data.append((f"{tracking_number} {status}", days))
+                elif input_data.startswith('GF'):
+                    tracking_number, status, days = check_gf(
+                        input_data, driver, last_website_checked)
+                    data.append((f"{tracking_number} {status}", days))
+                break
+            except Exception as e:
+                print("Something went wrong: Tracking number: ", input_data)
+                print(driver.session_id)
+                print(e)
             last_website_checked = input_data[:2]
 
         # Create a DataFrame
