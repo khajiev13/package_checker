@@ -59,4 +59,4 @@ def check_gf(tracking_number, driver, last_website_checked):
         return tracking_number, status, days_difference
 
     except Exception as e:
-        print("An error occurred:", driver.session_id, str(e))
+        print("Something went wrong in check_gf function", str(e))
