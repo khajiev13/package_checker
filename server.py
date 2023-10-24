@@ -47,6 +47,7 @@ def check_data():
         for input_data in input_datas:
             while True:
                 try:
+                    sleep(3)
                     if input_data.startswith('34'):
                         tracking_number, status, days = check_forty_seven(
                             input_data, driver, last_website_checked)
