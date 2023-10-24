@@ -59,6 +59,7 @@ def check_data():
                     break
                 except Exception as e:
                     print("Something went wrong: Tracking number: ", input_data)
+                    print(driver.session_id)
                     driver.quit()
                     print(e)
             last_website_checked = input_data[:2]
