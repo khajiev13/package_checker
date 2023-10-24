@@ -9,6 +9,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from flask_cors import CORS, cross_origin
 from flask import Flask, request, jsonify, send_file, send_from_directory
+from time import sleep
 
 
 op = webdriver.ChromeOptions()  # Uncomment on production
@@ -141,19 +142,18 @@ def check_gf(tracking_number):
         # Fill in the tracking number and submit the form
         tracking_input.send_keys(tracking_number)
         submit_button.click()
-        for i in range(2):
-            try:
-                driver.switch_to.window(driver.window_handles[-1])
-                # Try to locate and click the "Send anyway" button by its ID
-                proceed_button = proceed_button = WebDriverWait(driver, 10).until(
-                    EC.element_to_be_clickable((By.ID, 'proceed-button'))
-                )
-                proceed_button.click()
-            except Exception as e:
-                print(e)
-                # Handle the case when the button is not found
-                print(
-                    "The 'Send anyway' button is not present on the page. Continuing...")
+        try:
+            driver.switch_to.window(driver.window_handles[-1])
+            # Try to locate and click the "Send anyway" button by its ID
+            proceed_button = proceed_button = WebDriverWait(driver, 3).until(
+                EC.element_to_be_clickable((By.ID, 'proceed-button'))
+            )
+            proceed_button.click()
+        except Exception as e:
+            print(e)
+            # Handle the case when the button is not found
+            print(
+                "The 'Send anyway' button is not present on the page. Continuing...")
         # Wait for the table to load
         table = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, 'oTHtable'))
@@ -164,14 +164,12 @@ def check_gf(tracking_number):
         date_shipped = rows[len(
             rows)-1].find_elements(By.TAG_NAME, 'td')[0].text
         date_arrived = rows[1].find_elements(By.TAG_NAME, 'td')[0].text
-        print(date_shipped, date_arrived)
 
         # Calculate the difference in days
         date_format = '%Y-%m-%d %H:%M'
         start_date = datetime.datetime.strptime(date_shipped, date_format)
         end_date = datetime.datetime.strptime(date_arrived, date_format)
         days_difference = (end_date - start_date).days
-        print(days_difference)
         # Get the status of the package
         status_element = driver.find_element(By.ID, 'HeaderState')
         status = status_element.text.split('：')[1]
@@ -208,12 +206,20 @@ def check_data():
         # Define a list to store the data
         data = []
         for input_data in input_datas:
-            if input_data.startswith('34'):
-                tracking_number, status, days = check_forty_seven(input_data)
-                data.append((f"{tracking_number} {status}", days))
-            elif input_data.startswith('GF'):
-                tracking_number, status, days = check_gf(input_data)
-                data.append((f"{tracking_number} {status}", days))
+            while True:
+                try:
+                    sleep(3)
+                    if input_data.startswith('34'):
+                        tracking_number, status, days = check_forty_seven(
+                            input_data)
+                        data.append((f"{tracking_number} {status}", days))
+                    elif input_data.startswith('GF'):
+                        tracking_number, status, days = check_gf(input_data)
+                        data.append((f"{tracking_number} {status}", days))
+                    break
+                except Exception as e:
+                    print("Something went wrong: Tracking number: ", input_data)
+                    print(e)
 
         # Create a DataFrame
         df = pd.DataFrame(
@@ -221,7 +227,6 @@ def check_data():
 
         # Save the DataFrame to an Excel file
         output_data = BytesIO()
-        df.to_excel(output_data, index=False)
         output_data.seek(0)
         driver.quit()
         return send_file(
