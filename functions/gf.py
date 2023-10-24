@@ -60,4 +60,3 @@ def check_gf(tracking_number, driver, last_website_checked):
 
     except Exception as e:
         print("An error occurred:", driver.session_id, str(e))
-        driver.quit()

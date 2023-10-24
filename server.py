@@ -47,7 +47,7 @@ def check_data():
         for input_data in input_datas:
             while True:
                 try:
-                    sleep(3)
+                    sleep(5)
                     if input_data.startswith('34'):
                         tracking_number, status, days = check_forty_seven(
                             input_data, driver, last_website_checked)
@@ -60,7 +60,6 @@ def check_data():
                 except Exception as e:
                     print("Something went wrong: Tracking number: ", input_data)
                     print(driver.session_id)
-                    driver.quit()
                     print(e)
             last_website_checked = input_data[:2]
 
